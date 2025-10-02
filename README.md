@@ -40,7 +40,7 @@ larcolabs-frontend/
 ├── package.json
 ├── vite.config.js
 └── README.md
-
+```
 ---
 
 ## ✨ Autor
