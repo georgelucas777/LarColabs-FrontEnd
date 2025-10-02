@@ -7,10 +7,22 @@ const api = axios.create({
   },
 });
 
+api.interceptors.request.use((config) => {
+  const user =
+    JSON.parse(localStorage.getItem("user")) ||
+    JSON.parse(sessionStorage.getItem("user"));
+  if (user?.token) {
+    config.headers.Authorization = `Bearer ${user.token}`;
+  }
+  return config;
+});
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error("Erro na API:", error);
+    if (error.response?.status === 401) {
+      document.dispatchEvent(new Event("sessionExpired"));
+    }
     return Promise.reject(error);
   }
 );
