@@ -27,15 +27,16 @@ To do...
 
 ## 📂 Estrutura do Projeto
 
+```plaintext
 larcolabs-frontend/
 ├── src/
-│ ├── assets/ # Arquivos estáticos (imagens, ícones, etc.)
-│ ├── components/ # Componentes reutilizáveis (Navbar, etc.)
-│ ├── pages/ # Páginas principais (Home, Colaboradores, etc.)
-│ ├── services/ # Configuração do Axios e chamadas de API
-│ ├── styles/ # Estilos globais e customizados
-│ ├── App.jsx
-│ ├── main.jsx 
+│   ├── assets/        # Arquivos estáticos (imagens, ícones, etc.)
+│   ├── components/    # Componentes reutilizáveis (Navbar, etc.)
+│   ├── pages/         # Páginas principais (Home, Colaboradores, etc.)
+│   ├── services/      # Configuração do Axios e chamadas de API
+│   ├── styles/        # Estilos globais e customizados
+│   ├── App.jsx
+│   ├── main.jsx
 ├── package.json
 ├── vite.config.js
 └── README.md
