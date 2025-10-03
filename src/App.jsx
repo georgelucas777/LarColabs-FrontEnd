@@ -3,8 +3,8 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Colaboradores from "./pages/Colaboradores";
-import Telefones from "./pages/Telefones";   // ✅ importar Telefones
-// import Usuarios from "./pages/Usuarios";     // ✅ importar Usuarios
+import Telefones from "./pages/Telefones";
+import Conta from "./pages/Conta";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 
@@ -49,7 +49,14 @@ function App() {
                 </PrivateRoute>
               }
             />
-            
+            <Route
+              path="/conta"
+              element={
+                <PrivateRoute>
+                  <Conta />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </div>
       </BrowserRouter>
