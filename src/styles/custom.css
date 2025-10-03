@@ -1,0 +1,107 @@
+:root {
+  --color-primary: #3a506b;   /* azul petróleo fosco */
+  --color-success: #4c956c;   /* verde oliva suave */
+  --color-info:    #5c6b73;   /* cinza azulado */
+  --color-danger:  #c44536;   /* vermelho fosco */
+  --color-dark:    #2a2a2a;   /* quase preto */
+  --color-light:   #f4f4f4;   /* cinza claro */
+}
+
+.bg-light-card {
+  background-color: #f0f3f4; /* cinza claro */
+  border: 1px solid #dee2e6; /* borda suave */
+  border-radius: 8px;
+  padding: 15px;
+}
+
+/* Borda e destaque para DataTables */
+.data-table-wrapper {
+  background-color: #f0f3f4;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* cards */
+.dashboard-card {
+  border-radius: 10px;
+  background: var(--color-light);
+  color: var(--color-dark);
+  transition: transform 0.2s ease-in-out;
+  border: none;
+}
+.dashboard-card:hover { transform: translateY(-4px); }
+.dashboard-card .card-title { font-size: 1rem; font-weight: 600; color: var(--color-dark); }
+.dashboard-card .card-body p { font-size: 1.8rem; margin: 0; font-weight: bold; }
+
+.btn-chip {
+  border: none;
+  border-radius: 9999px;
+  padding: .5rem .9rem;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08);
+  transition: transform .15s ease, opacity .15s ease, filter .15s ease;
+  opacity: .95;
+}
+.btn-chip:hover { transform: translateY(-1px); opacity: 1; filter: brightness(1.03); }
+.btn-chip--dark    { background: var(--color-dark); }
+.btn-chip--primary { background: var(--color-primary); }
+.btn-chip--success { background: var(--color-success); }
+.btn-chip--info    { background: var(--color-info); }
+
+.nav-chips {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.btn-chip {
+  text-decoration: none !important;
+}
+
+.subnavbar .btn {
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.subnavbar .btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;  
+  color: #fff;
+  font-size: 18px;
+}
+
+.icon-dark {
+  background-color: #343a40; 
+}
+
+.icon-blue {
+  background-color: #0d6efd; 
+}
+
+.icon-green {
+  background-color: #198754; 
+}
+
+.icon-red {
+  background-color: #dc3545; 
+}
+
+.icon-purple {
+  background-color: #6f42c1; 
+}
