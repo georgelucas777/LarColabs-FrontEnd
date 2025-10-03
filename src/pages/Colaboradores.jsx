@@ -18,7 +18,7 @@ function Colaboradores() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [alerta, setAlerta] = useState(null);
-  const [showVincular, setShowVincular] = useState(false);
+  const [showVincularModal, setShowVincularModal] = useState(false);
   const [colabSelecionado, setColabSelecionado] = useState(null);
 
   useEffect(() => {
@@ -115,7 +115,7 @@ function Colaboradores() {
 
   const handleTelefones = (colab) => {
     setColabSelecionado(colab);
-    setShowVincular(true);
+    setShowVincularModal(true);
   };
 
   // Função para mascarar CPF
@@ -403,8 +403,8 @@ function Colaboradores() {
       </ModalCrud>
 
       <ModalVincular
-        show={showVincular}
-        onClose={() => setShowVincular(false)}
+        show={showVincularModal}
+        onClose={() => setShowVincularModal(false)}
         colaborador={colabSelecionado}
       />
 

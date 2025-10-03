@@ -1,122 +1,153 @@
-import { useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Modal, Button, Table } from "react-bootstrap";
 import api from "../services/api";
 import AlertaPopup from "./AlertaPopup";
 
 function ModalVincular({ show, onClose, colaborador }) {
   const [telefonesVinculados, setTelefonesVinculados] = useState([]);
   const [todosTelefones, setTodosTelefones] = useState([]);
-  const [telefoneSelecionado, setTelefoneSelecionado] = useState("");
   const [alerta, setAlerta] = useState(null);
 
   useEffect(() => {
-    if (show && colaborador) {
-      fetchTelefones();
+    if (show && colaborador?.id) {
+      carregarTelefones();
     }
   }, [show, colaborador]);
 
-  const fetchTelefones = async () => {
+  const carregarTelefones = async () => {
     try {
-      // Telefones já vinculados
-      const respVinc = await api.get(`/Colaborador/${colaborador.id}/Telefones`);
-      setTelefonesVinculados(respVinc.data);
+      if (!colaborador?.id) return;
 
-      // Todos os telefones disponíveis
+      const respVinculados = await api.get(
+        `/Colaborador/${colaborador.id}/Telefones`
+      );
+      setTelefonesVinculados(respVinculados.data);
+
       const respTodos = await api.get("/Telefone");
       setTodosTelefones(respTodos.data);
     } catch (err) {
-      console.error("Erro ao buscar telefones:", err);
+      console.error("Erro ao carregar telefones:", err);
+      setAlerta({ mensagem: "Erro ao carregar telefones", tipo: "erro" });
     }
   };
 
-  const handleVincular = async () => {
-    if (!telefoneSelecionado) return;
-
+  const handleVincular = async (telefoneId) => {
     try {
-      await api.post(`/Colaborador/${colaborador.id}/Telefones`, {
-        idTelefone: telefoneSelecionado,
+      await api.post(
+        `/Colaborador/${colaborador.id}/VincularTelefone/${telefoneId}`
+      );
+      setAlerta({
+        mensagem: "Telefone vinculado com sucesso!",
+        tipo: "sucesso",
       });
-      setAlerta({ mensagem: "Telefone vinculado com sucesso!", tipo: "sucesso" });
-      setTelefoneSelecionado("");
-      fetchTelefones();
+      carregarTelefones();
     } catch (err) {
       console.error("Erro ao vincular telefone:", err);
-      setAlerta({ mensagem: "Erro ao vincular telefone.", tipo: "erro" });
+      setAlerta({ mensagem: "Erro ao vincular telefone", tipo: "erro" });
     }
   };
 
-  const handleRemover = async (idTelefone) => {
+  const handleDesvincular = async (telefoneId) => {
     try {
-      await api.delete(`/Colaborador/${colaborador.id}/Telefones/${idTelefone}`);
-      setAlerta({ mensagem: "Telefone desvinculado!", tipo: "sucesso" });
-      fetchTelefones();
+      await api.delete(
+        `/Colaborador/${colaborador.id}/DesvincularTelefone/${telefoneId}`
+      );
+      setAlerta({
+        mensagem: "Telefone desvinculado com sucesso!",
+        tipo: "sucesso",
+      });
+      carregarTelefones();
     } catch (err) {
-      console.error("Erro ao remover vínculo:", err);
-      setAlerta({ mensagem: "Erro ao remover vínculo.", tipo: "erro" });
+      console.error("Erro ao desvincular telefone:", err);
+      setAlerta({ mensagem: "Erro ao desvincular telefone", tipo: "erro" });
     }
   };
+
+  const telefonesDisponiveis = todosTelefones.filter(
+    (tel) => !telefonesVinculados.some((v) => v.telefoneId === tel.id)
+  );
 
   return (
     <>
       <Modal show={show} onHide={onClose} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            Telefones de {colaborador?.nomeCompleto}
+            Gerenciar Telefones - {colaborador?.nomeCompleto}
           </Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
           {/* Telefones vinculados */}
-          <h6>Telefones Vinculados</h6>
-          {telefonesVinculados.length === 0 ? (
-            <p className="text-muted">Nenhum telefone vinculado.</p>
-          ) : (
-            <ul className="list-group mb-3">
-              {telefonesVinculados.map((tel) => (
-                <li
-                  key={tel.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  <span>
-                    ({tel.ddd}) {tel.numero} - {tel.tipo} ({tel.patrimonio})
-                  </span>
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => handleRemover(tel.id)}
-                  >
-                    <i className="bi bi-x-circle"></i>
-                  </button>
-                </li>
+          <h6 className="fw-bold text-secondary mb-2">
+            <i className="bi bi-telephone-fill me-1 text-danger"></i> Telefones
+            vinculados
+          </h6>
+          <Table striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>DDD</th>
+                <th>Número</th>
+                <th>Tipo</th>
+                <th>Patrimônio</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {telefonesVinculados.map((t) => (
+                <tr key={t.telefoneId}>
+                  <td>{t.ddd}</td>
+                  <td>{t.numero}</td>
+                  <td>{t.tipo}</td>
+                  <td>{t.patrimonio}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleDesvincular(t.telefoneId)}
+                    >
+                      <i className="bi bi-x-circle"></i> Desvincular
+                    </button>
+                  </td>
+                </tr>
               ))}
-            </ul>
-          )}
+            </tbody>
+          </Table>
 
-          {/* Vincular novo telefone */}
-          <h6>Vincular Novo Telefone</h6>
-          <div className="d-flex">
-            <select
-              className="form-select me-2"
-              value={telefoneSelecionado}
-              onChange={(e) => setTelefoneSelecionado(e.target.value)}
-            >
-              <option value="">Selecione um telefone...</option>
-              {todosTelefones
-                .filter(
-                  (tel) =>
-                    !telefonesVinculados.some((v) => v.id === tel.id) // exclui os já vinculados
-                )
-                .map((tel) => (
-                  <option key={tel.id} value={tel.id}>
-                    ({tel.ddd}) {tel.numero} - {tel.tipo} ({tel.patrimonio})
-                  </option>
-                ))}
-            </select>
-            <Button variant="primary" onClick={handleVincular}>
-              <i className="bi bi-plus-circle"></i> Adicionar
-            </Button>
-          </div>
+          <hr />
+
+          {/* Telefones disponíveis */}
+          <h6 className="fw-bold text-secondary mb-2">
+            <i className="bi bi-plus-circle me-1 text-success"></i> Adicionar
+            Telefone
+          </h6>
+          <Table striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>DDD</th>
+                <th>Número</th>
+                <th>Tipo</th>
+                <th>Patrimônio</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {telefonesDisponiveis.map((t) => (
+                <tr key={t.id}>
+                  <td>{t.ddd}</td>
+                  <td>{t.numero}</td>
+                  <td>{t.tipo}</td>
+                  <td>{t.patrimonio}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-success"
+                      onClick={() => handleVincular(t.id)}
+                    >
+                      <i className="bi bi-link"></i> Vincular
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </Modal.Body>
-
         <Modal.Footer>
           <Button variant="secondary" onClick={onClose}>
             Fechar
