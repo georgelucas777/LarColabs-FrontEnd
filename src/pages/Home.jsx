@@ -136,7 +136,7 @@ function Home() {
           </button>
         </div>
       ),
-      width: "160px", // 🔹 reduzido
+      width: "160px",
     },
     {
       name: "Telefones",

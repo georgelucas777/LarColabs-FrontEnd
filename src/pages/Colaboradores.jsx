@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import api from "../services/api";
 import SubNavbar from "../components/SubNavbar";
-import ModalCrud from "../components/ModalCrud"; // ✅ agora é ModalCrud
+import ModalCrud from "../components/ModalCrud";
 import { formatCpf } from "../utils/cpf.utils";
 import ConfirmModal from "../components/ConfirmModal";
 import ModalVincular from "../components/ModalVincular";
@@ -156,7 +156,7 @@ function Colaboradores() {
           </button>
         </div>
       ),
-      width: "160px", // 🔹 reduzido
+      width: "200px", 
     },
 
     {
@@ -169,7 +169,7 @@ function Colaboradores() {
         </span>
       ),
       sortable: true,
-      width: "160px", // 🔹 reduzido
+      width: "200px",
     },
 
     {
@@ -185,14 +185,13 @@ function Colaboradores() {
             <i className="bi bi-x-circle me-1"></i> Desativado
           </span>
         ),
-      width: "120px",
+      width: "200px",
     },
 
     {
       name: "Ações",
       cell: (row) => (
         <div className="d-flex justify-content-center">
-          {/* Telefones */}
           <button
             className="btn btn-sm btn-primary me-1"
             title="Gerenciar Telefones"
@@ -201,7 +200,6 @@ function Colaboradores() {
             <i className="bi bi-telephone"></i>
           </button>
 
-          {/* Editar */}
           <button
             className="btn btn-sm btn-warning me-1"
             title="Editar Colaborador"
@@ -210,7 +208,6 @@ function Colaboradores() {
             <i className="bi bi-pencil"></i>
           </button>
 
-          {/* Excluir */}
           <button
             className="btn btn-sm btn-danger"
             title="Excluir Colaborador"
@@ -220,7 +217,7 @@ function Colaboradores() {
           </button>
         </div>
       ),
-      width: "160px",
+      width: "200px",
       center: true,
     },
   ];
@@ -308,7 +305,6 @@ function Colaboradores() {
         />
       </div>
 
-      {/* ✅ ModalCrud */}
       <ModalCrud
         title={currentColab?.id ? "Editar Colaborador" : "Novo Colaborador"}
         show={showModal}
@@ -316,7 +312,6 @@ function Colaboradores() {
         onSave={handleSave}
       >
         <form id="formColaborador">
-          {/* Nome */}
           <div className="mb-3">
             <label className="form-label">Nome Completo</label>
             <div className="input-group">
@@ -335,9 +330,7 @@ function Colaboradores() {
             </div>
           </div>
 
-          {/* CPF + Data Nascimento lado a lado */}
           <div className="row">
-            {/* CPF */}
             <div className="col-md-6 mb-3">
               <label className="form-label">CPF</label>
               <div className="input-group">
@@ -349,15 +342,15 @@ function Colaboradores() {
                   className="form-control"
                   name="cpf"
                   placeholder="000.000.000-00"
-                  value={formatCpf(currentColab?.cpf || "")} // mostra formatado
+                  value={formatCpf(currentColab?.cpf || "")}
                   required
                   maxLength={14}
-                  pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" // aceita 000.000.000-00
+                  pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
                   onChange={(e) =>
                     handleChange({
                       target: {
                         name: "cpf",
-                        value: e.target.value.replace(/\D/g, ""), // salva só números no state
+                        value: e.target.value.replace(/\D/g, ""), 
                       },
                     })
                   }
@@ -365,7 +358,6 @@ function Colaboradores() {
               </div>
             </div>
 
-            {/* Data de Nascimento */}
             <div className="col-md-6 mb-3">
               <label className="form-label">Data de Nascimento</label>
               <div className="input-group">
@@ -384,7 +376,6 @@ function Colaboradores() {
             </div>
           </div>
 
-          {/* Ativo -> apenas na edição */}
           {currentColab?.id && (
             <div className="form-check mt-2">
               <input

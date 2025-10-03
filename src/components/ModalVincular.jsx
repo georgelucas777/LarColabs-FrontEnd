@@ -76,7 +76,6 @@ function ModalVincular({ show, onClose, colaborador }) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Telefones vinculados */}
           <h6 className="fw-bold text-secondary mb-2">
             <i className="bi bi-telephone-fill me-1 text-danger"></i> Telefones
             vinculados
@@ -113,7 +112,6 @@ function ModalVincular({ show, onClose, colaborador }) {
 
           <hr />
 
-          {/* Telefones disponíveis */}
           <h6 className="fw-bold text-secondary mb-2">
             <i className="bi bi-plus-circle me-1 text-success"></i> Adicionar
             Telefone

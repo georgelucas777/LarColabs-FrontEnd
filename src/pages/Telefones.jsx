@@ -57,7 +57,6 @@ function Telefones() {
           tipo: "sucesso",
         });
       } else {
-        // 🔹 Sempre cadastrar como Ativo
         const novoTelefone = { ...currentTel, status: "Ativo" };
         await api.post("/Telefone", novoTelefone);
         setAlerta({
@@ -178,7 +177,6 @@ function Telefones() {
       name: "Ações",
       cell: (row) => (
         <div className="d-flex justify-content-center">
-          {/* Editar */}
           <button
             className="btn btn-sm btn-warning me-1"
             title="Editar Telefone"
@@ -187,7 +185,6 @@ function Telefones() {
             <i className="bi bi-pencil"></i>
           </button>
 
-          {/* Excluir */}
           <button
             className="btn btn-sm btn-danger"
             title="Excluir Telefone"
@@ -198,7 +195,7 @@ function Telefones() {
         </div>
       ),
       width: "120px",
-      center: true, // 🔹 Centraliza o cabeçalho e os botões
+      center: true,
     },
   ];
 
@@ -301,7 +298,6 @@ function Telefones() {
         />
       </div>
 
-      {/* ✅ ModalCrud */}
       <ModalCrud
         title={currentTel?.id ? "Editar Telefone" : "Novo Telefone"}
         show={showModal}
@@ -309,9 +305,7 @@ function Telefones() {
         onSave={handleSave}
       >
         <form id="formTelefone">
-          {/* DDD + Número */}
           <div className="row">
-            {/* DDD */}
             <div className="col-md-4 mb-3">
               <label className="form-label">DDD</label>
               <div className="input-group">
@@ -340,7 +334,6 @@ function Telefones() {
               </div>
             </div>
 
-            {/* Número */}
             <div className="col-md-8 mb-3">
               <label className="form-label">Número</label>
               <div className="input-group">
@@ -370,7 +363,6 @@ function Telefones() {
             </div>
           </div>
 
-          {/* Tipo */}
           <div className="mb-3">
             <label className="form-label">Tipo</label>
             <select
@@ -386,7 +378,6 @@ function Telefones() {
             </select>
           </div>
 
-          {/* Patrimônio */}
           <div className="mb-3">
             <label className="form-label">Patrimônio</label>
             <select
@@ -402,7 +393,6 @@ function Telefones() {
             </select>
           </div>
 
-          {/* Status -> só aparece na edição */}
           {currentTel?.id && (
             <div className="mb-3">
               <label className="form-label">Status</label>

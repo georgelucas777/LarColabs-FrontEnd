@@ -25,9 +25,9 @@ function AlertaPopup({ mensagem, tipo = "sucesso", aoFechar }) {
     <div
       className="toast show position-fixed"
       style={{
-        bottom: "20px", // se quiser no canto inferior
-        left: "20px", // canto inferior esquerdo
-        zIndex: 9999, // 🔹 sempre acima do modal
+        bottom: "20px",
+        left: "20px",
+        zIndex: 9999,
         minWidth: "280px",
       }}
       role="alert"
