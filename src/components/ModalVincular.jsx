@@ -19,9 +19,9 @@ function ModalVincular({ show, onClose, colaborador }) {
       if (!colaborador?.id) return;
 
       const respVinculados = await api.get(
-        `/Colaborador/${colaborador.id}/Telefones`
+        `/Colaborador/${colaborador.id}/ListaTelefones`
       );
-      setTelefonesVinculados(respVinculados.data);
+      setTelefonesVinculados(respVinculados.data.telefones || []);
 
       const respTodos = await api.get("/Telefone");
       setTodosTelefones(respTodos.data);
@@ -64,7 +64,7 @@ function ModalVincular({ show, onClose, colaborador }) {
   };
 
   const telefonesDisponiveis = todosTelefones.filter(
-    (tel) => !telefonesVinculados.some((v) => v.telefoneId === tel.id)
+    (tel) => !telefonesVinculados.some((v) => v.id === tel.id)
   );
 
   return (
@@ -93,7 +93,7 @@ function ModalVincular({ show, onClose, colaborador }) {
             </thead>
             <tbody>
               {telefonesVinculados.map((t) => (
-                <tr key={t.telefoneId}>
+                <tr key={t.id}>
                   <td>{t.ddd}</td>
                   <td>{t.numero}</td>
                   <td>{t.tipo}</td>
@@ -101,7 +101,7 @@ function ModalVincular({ show, onClose, colaborador }) {
                   <td>
                     <button
                       className="btn btn-sm btn-danger"
-                      onClick={() => handleDesvincular(t.telefoneId)}
+                      onClick={() => handleDesvincular(t.id)}
                     >
                       <i className="bi bi-x-circle"></i> Desvincular
                     </button>
