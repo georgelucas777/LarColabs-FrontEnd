@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo.png";
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -11,24 +12,15 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
-        {/* Marca */}
-        <Link className="navbar-brand" to="/">LarColabs</Link>
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <img
+            src={logo}
+            alt="Logo"
+            width="80"
+            className="d-inline-block align-top me-2"
+          />
+        </Link>
 
-        {/* Menu quando logado */}
-        {user && (
-          <div>
-            <ul className="navbar-nav me-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/">Início</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/colaboradores">Colaboradores</Link>
-              </li>
-            </ul>
-          </div>
-        )}
-
-        {/* Área da direita */}
         <div className="d-flex align-items-center">
           {!user ? (
             <>
@@ -69,7 +61,10 @@ function Navbar() {
                   </Link>
                 </li>
                 <li>
-                  <button className="dropdown-item text-danger" onClick={logout}>
+                  <button
+                    className="dropdown-item text-danger"
+                    onClick={logout}
+                  >
                     Sair
                   </button>
                 </li>
