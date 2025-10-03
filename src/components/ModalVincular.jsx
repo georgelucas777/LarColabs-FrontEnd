@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Table } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
+import DataTable from "react-data-table-component";
 import api from "../services/api";
 import AlertaPopup from "./AlertaPopup";
 
@@ -7,6 +8,7 @@ function ModalVincular({ show, onClose, colaborador }) {
   const [telefonesVinculados, setTelefonesVinculados] = useState([]);
   const [todosTelefones, setTodosTelefones] = useState([]);
   const [alerta, setAlerta] = useState(null);
+  const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
     if (show && colaborador?.id) {
@@ -63,6 +65,7 @@ function ModalVincular({ show, onClose, colaborador }) {
     }
   };
 
+  // ===== FORMATADORES =====
   const formatarStatus = (status) => {
     if (!status) return "";
     switch (status.toLowerCase()) {
@@ -101,10 +104,93 @@ function ModalVincular({ show, onClose, colaborador }) {
     }
   };
 
+  // Telefones disponíveis (sem colaborador e não desativados)
   const telefonesDisponiveis = todosTelefones.filter(
     (tel) =>
       !telefonesVinculados.some((v) => v.id === tel.id) &&
       tel.status?.toLowerCase() !== "desativado"
+  );
+
+  // ===== COLUNAS DATATABLE =====
+  const colunas = (acoes) => [
+    {
+      name: "DDD",
+      selector: (row) => row.ddd,
+      sortable: true,
+      center: true,
+      width: "100px",
+    },
+    {
+      name: "Número",
+      selector: (row) => row.numero,
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Tipo",
+      selector: (row) => formatarTipo(row.tipo),
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Patrimônio",
+      selector: (row) => formatarPatrimonio(row.patrimonio),
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Status",
+      selector: (row) => formatarStatus(row.status),
+      sortable: true,
+      center: true,
+      width: "120px",
+    },
+    {
+      name: "Ações",
+      center: true,
+      width: "160px",
+      cell: (row) => acoes(row),
+    },
+  ];
+
+  // ===== ESTILO IGUAL AO HOME =====
+  const customStyles = {
+    table: {
+      style: { borderRadius: "8px", overflow: "hidden" },
+    },
+    headCells: {
+      style: { fontSize: "15px", fontWeight: "bold", textAlign: "center" },
+    },
+    cells: {
+      style: { fontSize: "14px", paddingTop: "10px", paddingBottom: "10px" },
+    },
+  };
+
+  // Header de pesquisa
+  const TableHeader = (titulo, placeholder, reload) => (
+    <div className="d-flex justify-content-between align-items-center w-100">
+      <h6 className="fw-bold text-secondary mb-0 d-flex align-items-center">
+        {titulo}
+      </h6>
+      <div className="d-flex align-items-center">
+        <input
+          type="text"
+          placeholder={placeholder}
+          className="form-control form-control-sm"
+          style={{ width: "220px" }}
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+        />
+        {reload && (
+          <button
+            className="btn btn-outline-secondary btn-sm ms-2"
+            onClick={carregarTelefones}
+          >
+            <i className="bi bi-arrow-clockwise"></i>
+          </button>
+        )}
+      </div>
+    </div>
   );
 
   return (
@@ -116,91 +202,79 @@ function ModalVincular({ show, onClose, colaborador }) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h6 className="fw-bold text-secondary mb-2">
-            <i className="bi bi-telephone-fill me-1 text-danger"></i> Telefones
-            vinculados
-          </h6>
-          <Table
+          <DataTable
+            columns={colunas((t) => (
+              <button
+                className="btn btn-sm btn-danger"
+                onClick={() => handleDesvincular(t.id)}
+              >
+                <i className="bi bi-x-circle"></i> Desvincular
+              </button>
+            ))}
+            data={telefonesVinculados.filter(
+              (item) =>
+                item.ddd.includes(filterText) ||
+                item.numero.includes(filterText) ||
+                formatarTipo(item.tipo)
+                  .toLowerCase()
+                  .includes(filterText.toLowerCase())
+            )}
+            pagination
+            highlightOnHover
             striped
-            bordered
-            hover
-            size="sm"
-            className="text-center align-middle"
-          >
-            <thead className="table-light">
-              <tr>
-                <th>DDD</th>
-                <th>Número</th>
-                <th>Tipo</th>
-                <th>Patrimônio</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {telefonesVinculados.map((t) => (
-                <tr key={t.id}>
-                  <td>{t.ddd}</td>
-                  <td>{t.numero}</td>
-                  <td>{formatarTipo(t.tipo)}</td> {/* ✅ */}
-                  <td>{formatarPatrimonio(t.patrimonio)}</td> {/* ✅ */}
-                  <td>{formatarStatus(t.status)}</td> {/* ✅ */}
-                  <td>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDesvincular(t.id)}
-                    >
-                      <i className="bi bi-x-circle"></i> Desvincular
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+            responsive
+            customStyles={customStyles}
+            subHeader
+            subHeaderComponent={TableHeader(
+              "📞 Telefones vinculados",
+              "Pesquisar telefone vinculado", 
+              true
+            )}
+            paginationRowsPerPageOptions={[5, 10]}
+            noDataComponent="Nenhum telefone disponível"
+            paginationComponentOptions={{
+              rowsPerPageText: "Registros por página:",
+              rangeSeparatorText: "de",
+            }}
+          />
 
           <hr />
 
-          <h6 className="fw-bold text-secondary mb-2">
-            <i className="bi bi-plus-circle me-1 text-success"></i> Adicionar
-            Telefone
-          </h6>
-          <Table
+          <DataTable
+            columns={colunas((t) => (
+              <button
+                className="btn btn-sm btn-success"
+                onClick={() => handleVincular(t.id)}
+              >
+                <i className="bi bi-link"></i> Vincular
+              </button>
+            ))}
+            data={telefonesDisponiveis.filter(
+              (item) =>
+                item.ddd.includes(filterText) ||
+                item.numero.includes(filterText) ||
+                formatarTipo(item.tipo)
+                  .toLowerCase()
+                  .includes(filterText.toLowerCase())
+            )}
+            pagination
+            highlightOnHover
             striped
-            bordered
-            hover
-            size="sm"
-            className="text-center align-middle"
-          >
-            <thead className="table-light">
-              <tr>
-                <th>DDD</th>
-                <th>Número</th>
-                <th>Tipo</th>
-                <th>Patrimônio</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {telefonesDisponiveis.map((t) => (
-                <tr key={t.id}>
-                  <td>{t.ddd}</td>
-                  <td>{t.numero}</td>
-                  <td>{formatarTipo(t.tipo)}</td> {/* ✅ */}
-                  <td>{formatarPatrimonio(t.patrimonio)}</td> {/* ✅ */}
-                  <td>{formatarStatus(t.status)}</td> {/* ✅ */}
-                  <td>
-                    <button
-                      className="btn btn-sm btn-success"
-                      onClick={() => handleVincular(t.id)}
-                    >
-                      <i className="bi bi-link"></i> Vincular
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+            responsive
+            customStyles={customStyles}
+            subHeader
+            subHeaderComponent={TableHeader(
+              "➕ Telefones disponíveis",
+              "Pesquisar telefone disponível",
+              true
+            )}
+            paginationRowsPerPageOptions={[5, 10]}
+            noDataComponent="Nenhum telefone disponível"
+            paginationComponentOptions={{
+              rowsPerPageText: "Registros por página:",
+              rangeSeparatorText: "de",
+            }}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onClose}>

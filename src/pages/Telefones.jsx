@@ -322,7 +322,7 @@ function Telefones() {
                   type="text"
                   className="form-control"
                   name="ddd"
-                  placeholder="085"
+                  placeholder="000"
                   value={currentTel?.ddd || ""}
                   maxLength={3}
                   inputMode="numeric"
