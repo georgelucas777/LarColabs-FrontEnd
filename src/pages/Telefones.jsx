@@ -69,7 +69,13 @@ function Telefones() {
       handleCloseModal();
     } catch (err) {
       console.error("Erro ao salvar telefone:", err);
-      setAlerta({ mensagem: "Erro ao salvar telefone!", tipo: "erro" });
+
+      const mensagemApi = err.response?.data?.mensagem;
+
+      setAlerta({
+        mensagem: mensagemApi || "Erro ao salvar telefone!",
+        tipo: "erro",
+      });
     }
   };
 

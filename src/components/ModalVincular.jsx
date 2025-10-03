@@ -231,7 +231,7 @@ function ModalVincular({ show, onClose, colaborador }) {
               true
             )}
             paginationRowsPerPageOptions={[5, 10]}
-            noDataComponent="Nenhum telefone disponível"
+            noDataComponent="Nenhum telefone vinculado"
             paginationComponentOptions={{
               rowsPerPageText: "Registros por página:",
               rangeSeparatorText: "de",

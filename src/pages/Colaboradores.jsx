@@ -74,7 +74,12 @@ function Colaboradores() {
       handleCloseModal();
     } catch (err) {
       console.error("Erro ao salvar colaborador:", err);
-      setAlerta({ mensagem: "Erro ao salvar colaborador!", tipo: "erro" });
+      const mensagemApi = err.response?.data?.mensagem;
+
+      setAlerta({
+        mensagem: mensagemApi || "Erro ao salvar colaborador!",
+        tipo: "erro",
+      });
     }
   };
 
