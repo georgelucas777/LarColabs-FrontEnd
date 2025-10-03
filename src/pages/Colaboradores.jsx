@@ -156,7 +156,7 @@ function Colaboradores() {
           </button>
         </div>
       ),
-      width: "200px", 
+      width: "200px",
     },
 
     {
@@ -302,6 +302,12 @@ function Colaboradores() {
           paginationRowsPerPageOptions={[5, 10, 20, 50]}
           paginationPerPage={5}
           noDataComponent="Nenhum colaborador encontrado"
+          paginationComponentOptions={{
+            rowsPerPageText: "Registros por página:",
+            rangeSeparatorText: "de",
+            selectAllRowsItem: true,
+            selectAllRowsItemText: "Todos",
+          }}
         />
       </div>
 
@@ -350,7 +356,7 @@ function Colaboradores() {
                     handleChange({
                       target: {
                         name: "cpf",
-                        value: e.target.value.replace(/\D/g, ""), 
+                        value: e.target.value.replace(/\D/g, ""),
                       },
                     })
                   }

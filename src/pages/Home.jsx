@@ -353,6 +353,12 @@ function Home() {
           paginationRowsPerPageOptions={[5, 10, 20, 50]}
           paginationPerPage={10}
           noDataComponent="Nenhum colaborador encontrado"
+          paginationComponentOptions={{
+            rowsPerPageText: "Registros por página:",
+            rangeSeparatorText: "de",
+            selectAllRowsItem: true,
+            selectAllRowsItemText: "Todos",
+          }}
         />
       </div>
     </div>

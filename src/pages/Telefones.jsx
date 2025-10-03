@@ -295,6 +295,12 @@ function Telefones() {
           paginationRowsPerPageOptions={[5, 10, 20, 50]}
           paginationPerPage={5}
           noDataComponent="Nenhum telefone encontrado"
+          paginationComponentOptions={{
+            rowsPerPageText: "Registros por página:",
+            rangeSeparatorText: "de",
+            selectAllRowsItem: true,
+            selectAllRowsItemText: "Todos",
+          }}
         />
       </div>
 
