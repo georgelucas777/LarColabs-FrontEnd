@@ -31,10 +31,13 @@ export function AuthProvider({ children }) {
         sessionStorage.setItem("user", JSON.stringify(userData));
       }
 
-      return true;
+      return { success: true };
     } catch (error) {
-      console.error("Erro de login:", error.response?.data || error.message);
-      return false;
+      const mensagem =
+        error.response?.data?.message ||
+        "Erro ao fazer login. Tente novamente.";
+      console.error("Erro de login:", mensagem);
+      return { success: false, message: mensagem };
     }
   };
 

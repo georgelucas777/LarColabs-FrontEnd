@@ -45,12 +45,12 @@ function Login() {
 
     if (!validate()) return;
 
-    const success = await login(email, password, keepLogged);
+    const result = await login(email, password, keepLogged);
 
-    if (success) {
+    if (result.success) {
       navigate("/");
     } else {
-      setErrors({ general: "Credenciais inválidas" });
+      setErrors({ general: result.message || "Credenciais inválidas" });
     }
   };
 

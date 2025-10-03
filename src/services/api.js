@@ -20,9 +20,18 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    const originalRequest = error.config;
+    if (
+      originalRequest?.url?.includes("/Usuario/login") ||
+      originalRequest?.url?.includes("/Usuario/registrar")
+    ) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401) {
       document.dispatchEvent(new Event("sessionExpired"));
     }
+
     return Promise.reject(error);
   }
 );
