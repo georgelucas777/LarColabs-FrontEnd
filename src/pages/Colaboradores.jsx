@@ -118,7 +118,6 @@ function Colaboradores() {
     setShowVincularModal(true);
   };
 
-  // Função para mascarar CPF
   const maskCpf = (cpf) => {
     const formatted = formatCpf(cpf);
     return formatted.replace(
@@ -127,7 +126,6 @@ function Colaboradores() {
     );
   };
 
-  // Alternar visibilidade do CPF
   const toggleCpfVisibility = (id) => {
     setCpfVisible((prev) => ({
       ...prev,
