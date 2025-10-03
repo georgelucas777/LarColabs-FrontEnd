@@ -299,7 +299,7 @@ function Telefones() {
           subHeader
           subHeaderComponent={TableHeader}
           paginationRowsPerPageOptions={[5, 10, 20, 50]}
-          paginationPerPage={5}
+          paginationPerPage={10}
           noDataComponent="Nenhum telefone encontrado"
           paginationComponentOptions={{
             rowsPerPageText: "Registros por página:",

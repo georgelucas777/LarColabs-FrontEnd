@@ -305,7 +305,7 @@ function Colaboradores() {
           subHeader
           subHeaderComponent={TableHeader}
           paginationRowsPerPageOptions={[5, 10, 20, 50]}
-          paginationPerPage={5}
+          paginationPerPage={10}
           noDataComponent="Nenhum colaborador encontrado"
           paginationComponentOptions={{
             rowsPerPageText: "Registros por página:",

@@ -220,6 +220,7 @@ function ModalVincular({ show, onClose, colaborador }) {
                   .includes(filterText.toLowerCase())
             )}
             pagination
+            paginationPerPage={5}
             highlightOnHover
             striped
             responsive
@@ -258,6 +259,7 @@ function ModalVincular({ show, onClose, colaborador }) {
                   .includes(filterText.toLowerCase())
             )}
             pagination
+            paginationPerPage={5}
             highlightOnHover
             striped
             responsive
