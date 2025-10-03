@@ -63,8 +63,48 @@ function ModalVincular({ show, onClose, colaborador }) {
     }
   };
 
+  const formatarStatus = (status) => {
+    if (!status) return "";
+    switch (status.toLowerCase()) {
+      case "ativo":
+        return "Ativo";
+      case "manutencao":
+        return "Manutenção";
+      case "desativado":
+        return "Desativado";
+      default:
+        return status;
+    }
+  };
+
+  const formatarTipo = (tipo) => {
+    if (!tipo) return "";
+    switch (tipo.toLowerCase()) {
+      case "movel":
+        return "Móvel";
+      case "fixo":
+        return "Fixo";
+      default:
+        return tipo;
+    }
+  };
+
+  const formatarPatrimonio = (patrimonio) => {
+    if (!patrimonio) return "";
+    switch (patrimonio.toLowerCase()) {
+      case "pessoal":
+        return "Pessoal";
+      case "corporativo":
+        return "Corporativo";
+      default:
+        return patrimonio;
+    }
+  };
+
   const telefonesDisponiveis = todosTelefones.filter(
-    (tel) => !telefonesVinculados.some((v) => v.id === tel.id)
+    (tel) =>
+      !telefonesVinculados.some((v) => v.id === tel.id) &&
+      tel.status?.toLowerCase() !== "desativado"
   );
 
   return (
@@ -80,13 +120,20 @@ function ModalVincular({ show, onClose, colaborador }) {
             <i className="bi bi-telephone-fill me-1 text-danger"></i> Telefones
             vinculados
           </h6>
-          <Table striped bordered hover size="sm">
-            <thead>
+          <Table
+            striped
+            bordered
+            hover
+            size="sm"
+            className="text-center align-middle"
+          >
+            <thead className="table-light">
               <tr>
                 <th>DDD</th>
                 <th>Número</th>
                 <th>Tipo</th>
                 <th>Patrimônio</th>
+                <th>Status</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -95,8 +142,9 @@ function ModalVincular({ show, onClose, colaborador }) {
                 <tr key={t.id}>
                   <td>{t.ddd}</td>
                   <td>{t.numero}</td>
-                  <td>{t.tipo}</td>
-                  <td>{t.patrimonio}</td>
+                  <td>{formatarTipo(t.tipo)}</td> {/* ✅ */}
+                  <td>{formatarPatrimonio(t.patrimonio)}</td> {/* ✅ */}
+                  <td>{formatarStatus(t.status)}</td> {/* ✅ */}
                   <td>
                     <button
                       className="btn btn-sm btn-danger"
@@ -116,13 +164,20 @@ function ModalVincular({ show, onClose, colaborador }) {
             <i className="bi bi-plus-circle me-1 text-success"></i> Adicionar
             Telefone
           </h6>
-          <Table striped bordered hover size="sm">
-            <thead>
+          <Table
+            striped
+            bordered
+            hover
+            size="sm"
+            className="text-center align-middle"
+          >
+            <thead className="table-light">
               <tr>
                 <th>DDD</th>
                 <th>Número</th>
                 <th>Tipo</th>
                 <th>Patrimônio</th>
+                <th>Status</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -131,8 +186,9 @@ function ModalVincular({ show, onClose, colaborador }) {
                 <tr key={t.id}>
                   <td>{t.ddd}</td>
                   <td>{t.numero}</td>
-                  <td>{t.tipo}</td>
-                  <td>{t.patrimonio}</td>
+                  <td>{formatarTipo(t.tipo)}</td> {/* ✅ */}
+                  <td>{formatarPatrimonio(t.patrimonio)}</td> {/* ✅ */}
+                  <td>{formatarStatus(t.status)}</td> {/* ✅ */}
                   <td>
                     <button
                       className="btn btn-sm btn-success"
